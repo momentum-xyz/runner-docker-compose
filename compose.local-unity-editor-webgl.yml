@@ -1,0 +1,11 @@
+# Run a WebGL build from the editor, set output dir to /tmp/u.
+services:
+  controller:
+    environment:
+      UNITY_LOADER_FILE_NAME: "u.loader.js"
+      UNITY_FRAMEWORK_FILE_NAME: "u.framework.js"
+      UNITY_CODE_FILE_NAME: "u.wasm"
+      UNITY_DATA_FILE_NAME: "u.data"
+  frontend:
+    volumes:
+      - /tmp/u/Build:/srv/unity:ro

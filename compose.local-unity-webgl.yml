@@ -1,0 +1,5 @@
+# Unity batch WebGL build, assumes unity-client repo is checkout next to this on.
+services:
+  frontend:
+    volumes:
+      - ../unity-client/build/WebGL/WebGL/Build:/srv/unity:ro

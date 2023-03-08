@@ -1,0 +1,12 @@
+services:
+  controller:
+    healthcheck:
+      test:
+        - "CMD"
+        - "true"
+    entrypoint: ["sleep", "42d"]
+
+  frontend:
+    environment:
+      CONTROLLER_URL: http://host.docker.internal:4000
+

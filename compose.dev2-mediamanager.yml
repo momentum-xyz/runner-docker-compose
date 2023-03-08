@@ -1,0 +1,5 @@
+services:
+  frontend:
+    environment:
+      MEDIA_MANAGER_URL: https://dev2.odyssey.ninja
+

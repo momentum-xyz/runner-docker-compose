@@ -1,0 +1,77 @@
+# Shared environment vars:
+x-environment: &commonEnvironment
+  DEPLOYMENT: docker-compose
+name: Odyssey
+services:
+  db:
+    image: postgres:15.2
+    pull_policy: missing
+    container_name: "db"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  media-manager:
+    image: "${CONTAINER_REPO-ghcr.io/momentum-xyz/}media-manager:${VERSION_MEDIA_MANAGER:-develop}"
+    pull_policy: ${PULL_POLICY:-always}
+    container_name: "media-manager"
+    volumes:
+      - media-data:/opt/data
+    environment:
+      <<: *commonEnvironment
+      RENDER_ASSET_PATH: /opt/data/assets
+      RENDER_IMAGE_PATH: /opt/data/images
+      RENDER_AUDIO_PATH: /opt/data/audio
+      RENDER_LOGLEVEL: "-1"
+    healthcheck:
+      test: ["CMD", "wget", "--tries=1", "--spider", "http://localhost:4000/health"]
+      interval: 10s
+      timeout: 2s
+      retries: 3
+
+  controller:
+    image: "${CONTAINER_REPO-ghcr.io/momentum-xyz/}ubercontroller:${VERSION_CONTROLLER:-develop}"
+    pull_policy: ${PULL_POLICY:-always}
+    container_name: "controller"
+    environment:
+      <<: *commonEnvironment
+      PGDB_HOST: "db"
+      DB_PORT: "5432"
+      UNITY_CLIENT_URL: "/unity"
+      UNITY_LOADER_FILE_NAME: "WebGL.loader.js"
+      UNITY_FRAMEWORK_FILE_NAME: "WebGL.framework.js"
+      UNITY_CODE_FILE_NAME: "WebGL.wasm"
+      UNITY_DATA_FILE_NAME: "WebGL.data"
+      RENDER_INTERNAL_URL: http://media-manager:4000
+    healthcheck:
+      test: ["CMD", "wget", "--tries=1", "--spider", "http://localhost:4000/health"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+    depends_on:
+      db:
+        condition: service_healthy
+      media-manager:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        version_ui: ${VERSION_UI:-develop}
+        version_unity: ${VERSION_UNITY:-develop}
+    # image: "momentum-frontend:develop"
+    pull_policy: always
+    container_name: "frontend"
+    depends_on:
+      controller:
+        condition: service_healthy
+
+
+volumes:
+  db-data:
+  media-data:
+

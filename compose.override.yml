@@ -1,0 +1,36 @@
+# Docker compose override file for local development.
+services:
+  db:
+    environment:
+      POSTGRES_PASSWORD: momentum
+      POSTGRES_USER: momentum
+      POSTGRES_DB: momentum
+      PGUSER: momentum
+#    volumes:
+#      - ./postgresql/database-schema.sql:/docker-entrypoint-initdb.d/00-init-schema.sql:ro
+#      - ./postgresql/database-data.sql.xz:/docker-entrypoint-initdb.d/01-init-data.sql.xz:ro
+    ports:
+      - "54321:5432"
+  media-manager:
+    ports:
+      - "4004:4000"
+
+  controller:
+    ports:
+      - "4001:4000"
+    env_file:
+      - ./controller.dev.env
+    environment:
+      DB_USERNAME: "momentum"
+      DB_PASSWORD: "momentum"
+      DB_DATABASE: "momentum"
+      DB_MAX_CONNS: "4"
+      CONTROLLER_LOGLEVEL: "0"
+      FRONTEND_URL: http://localhost:8080
+
+  frontend:
+    ports:
+      - "8080:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
