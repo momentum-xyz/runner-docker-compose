@@ -47,12 +47,6 @@ COMPOSE_FILE=compose.yml;compose.override.yml:compose.local-controller.yml docke
 ```
 
 
-### Unity
-
-When working in the editor make it connect to the http://localhost:8080 backend.
-For testing a WebGL build, output it in `/tmp/u` and apply the compose.local-unity-editor-webgl.yml (on top of the default compose file, see above)
-
-
 ### Frontend (ui-client)
 
 As this is the 'top' of the stack, no compose method is needed here.

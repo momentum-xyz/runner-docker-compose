@@ -15,15 +15,6 @@ server {
     gzip_static on;
   }
 
-  location ^~ /unity/ {
-    alias /srv/unity/;
-    gzip_static always;
-    add_header 'access-control-allow-origin' '*' always;
-    add_header 'access-control-allow-methods' 'GET' always;
-    add_header 'access-control-allow-headers' 'dnt,user-agent,x-requested-with,if-modified-since,cache-control,content-type,range' always;
-    add_header 'vary' 'Origin' always;
-  }
-
   location ~* /\.(?!well-known\/) {
     deny all;
   }

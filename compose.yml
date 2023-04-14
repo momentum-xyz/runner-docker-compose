@@ -62,7 +62,6 @@ services:
       context: ./frontend
       args:
         version_ui: ${VERSION_UI:-develop}
-        version_unity: ${VERSION_UNITY:-develop}
     # image: "momentum-frontend:develop"
     pull_policy: always
     container_name: "frontend"
