@@ -2,7 +2,7 @@
 ARG version_ui=develop
 FROM ghcr.io/momentum-xyz/ui-client:$version_ui as ui-client
 
-FROM nginx:1.23.3-alpine as runtime
+FROM nginx:1.23.4-alpine as runtime
 
 ENV CONTROLLER_URL=http://controller:4000 \
     MEDIA_MANAGER_URL=http://media-manager:4000
