@@ -1,7 +1,7 @@
 # Shared environment vars:
 x-environment: &commonEnvironment
   DEPLOYMENT: docker-compose
-name: Odyssey
+name: odyssey
 services:
   db:
     image: postgres:15.2
