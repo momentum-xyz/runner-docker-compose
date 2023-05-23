@@ -4,6 +4,10 @@ server {
 
   server_name _;
 
+  include /etc/nginx/mime.types;
+  types {
+    text/javascript mjs;
+  }
 
   location / {
     root   /srv/ui;
