@@ -54,6 +54,8 @@ server {
     proxy_hide_header 'access-control-allow-methods';
     proxy_hide_header 'access-control-allow-headers';
     proxy_hide_header 'access-control-expose-headers';
+
+    client_max_body_size 51m;
   }
 
   location ^~ /posbus {
