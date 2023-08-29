@@ -11,9 +11,6 @@ services:
 #      - ./postgresql/database-data.sql.xz:/docker-entrypoint-initdb.d/01-init-data.sql.xz:ro
     ports:
       - "54321:5432"
-  media-manager:
-    ports:
-      - "4004:4000"
 
   controller:
     ports:

@@ -14,38 +14,21 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-  media-manager:
-    image: "${CONTAINER_REPO-ghcr.io/momentum-xyz/}media-manager:${VERSION_MEDIA_MANAGER:-develop}"
-    pull_policy: ${PULL_POLICY:-always}
-    container_name: "media-manager"
-    volumes:
-      - media-data:/opt/data
-    environment:
-      <<: *commonEnvironment
-      RENDER_ASSET_PATH: /opt/data/assets
-      RENDER_IMAGE_PATH: /opt/data/images
-      RENDER_AUDIO_PATH: /opt/data/audio
-      RENDER_LOGLEVEL: "-1"
-    healthcheck:
-      test: ["CMD", "wget", "--tries=1", "--spider", "http://localhost:4000/health"]
-      interval: 10s
-      timeout: 2s
-      retries: 3
 
   controller:
     image: "${CONTAINER_REPO-ghcr.io/momentum-xyz/}ubercontroller:${VERSION_CONTROLLER:-develop}"
     pull_policy: ${PULL_POLICY:-always}
     container_name: "controller"
+    volumes:
+      - media-data:/opt/data
     environment:
       <<: *commonEnvironment
       PGDB_HOST: "db"
       DB_PORT: "5432"
-      UNITY_CLIENT_URL: "/unity"
-      UNITY_LOADER_FILE_NAME: "WebGL.loader.js"
-      UNITY_FRAMEWORK_FILE_NAME: "WebGL.framework.js"
-      UNITY_CODE_FILE_NAME: "WebGL.wasm"
-      UNITY_DATA_FILE_NAME: "WebGL.data"
-      RENDER_INTERNAL_URL: http://media-manager:4000
+      RENDER_ASSET_PATH: /opt/data/assets
+      RENDER_AUDIO_PATH: /opt/data/audio
+      RENDER_IMAGE_PATH: /opt/data/images
+      RENDER_VIDEO_PATH: /opt/data/video
     healthcheck:
       test: ["CMD", "wget", "--tries=1", "--spider", "http://localhost:4000/health"]
       interval: 5s
@@ -53,8 +36,6 @@ services:
       retries: 3
     depends_on:
       db:
-        condition: service_healthy
-      media-manager:
         condition: service_healthy
 
   frontend:
