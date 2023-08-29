@@ -6,7 +6,6 @@ services:
   db:
     image: postgres:15.2
     pull_policy: missing
-    container_name: "db"
     volumes:
       - db-data:/var/lib/postgresql/data
     healthcheck:
@@ -18,7 +17,6 @@ services:
   controller:
     image: "${CONTAINER_REPO-ghcr.io/momentum-xyz/}ubercontroller:${VERSION_CONTROLLER:-develop}"
     pull_policy: ${PULL_POLICY:-always}
-    container_name: "controller"
     volumes:
       - media-data:/opt/data
     environment:
@@ -45,7 +43,6 @@ services:
         version_ui: ${VERSION_UI:-develop}
     # image: "momentum-frontend:develop"
     pull_policy: always
-    container_name: "frontend"
     depends_on:
       controller:
         condition: service_healthy

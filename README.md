@@ -13,7 +13,7 @@ docker compose up
 - [docker](https://docs.docker.com/)
 - [docker compose](https://docs.docker.com/compose/) v2+
 
-## Starting for the fist time
+## Starting for the first time
 
 ```bash
 docker compose up
@@ -31,6 +31,13 @@ docker compose up --build
 ```
 
 A `compose build --pull` is needed to make docker pull the 'nested' dependencies inside the frontend/Dockerfile.
+
+## Blockchain networks
+
+By default it is configured to talk to a private test net.
+
+To run against the Goerli ethereum testnet use the `compose.testnet.yml` override file.
+
 
 ## Running it with a local develop version
 During development of one or more parts of the stack, these can be 'swapped' out to use the locally runnning development versions.
